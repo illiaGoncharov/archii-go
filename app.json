@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "Archi-Go",
+    "slug": "archi-go",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.archigo.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Archi-Go использует камеру для съёмки архитектурных элементов.",
+        "NSLocationWhenInUseUsageDescription": "Archi-Go использует вашу геолокацию для отображения точек интереса на карте."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "package": "com.archigo.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Archi-Go использует камеру для съёмки архитектурных элементов."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Archi-Go использует вашу геолокацию для отображения точек интереса на карте."
+        }
+      ]
+    ],
+    "scheme": "archigo"
+  }
+}
+
