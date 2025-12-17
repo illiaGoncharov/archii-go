@@ -34,6 +34,8 @@ npm start
 
 Вся документация находится в папке [`docs/`](docs/):
 
+### Разработка
+
 | Документ | Описание |
 |----------|----------|
 | [**START_HERE.md**](docs/START_HERE.md) | 👈 Начни отсюда |
@@ -43,6 +45,18 @@ npm start
 | [**ASSETS_GUIDE.md**](docs/ASSETS_GUIDE.md) | Как создавать графику элементов |
 | [**CONTRIBUTING.md**](docs/CONTRIBUTING.md) | Гайд для разработчика |
 | [**TODO.md**](docs/TODO.md) | Roadmap и следующие шаги |
+
+### Бизнес и стратегия
+
+| Документ | Описание |
+|----------|----------|
+| [**MONETIZATION_RUSSIA.md**](docs/MONETIZATION_RUSSIA.md) | Модель монетизации для РФ |
+| [**PITCH_CULTURAL.md**](docs/PITCH_CULTURAL.md) | Pitch для музеев и культурных институций |
+| [**GRANT_APPLICATION.md**](docs/GRANT_APPLICATION.md) | Структура грантовых заявок |
+| [**PARTNER_PROGRAM.md**](docs/PARTNER_PROGRAM.md) | Партнёрская программа |
+| [**CONTENT_ROADMAP.md**](docs/CONTENT_ROADMAP.md) | Roadmap контента |
+| [**EVENT_STRATEGY.md**](docs/EVENT_STRATEGY.md) | Стратегия мероприятий |
+| [**COMMUNICATION_STRATEGY.md**](docs/COMMUNICATION_STRATEGY.md) | Коммуникационная стратегия |
 
 ## Стек технологий
 
