@@ -36,13 +36,13 @@ npm start
 
 | Документ | Описание |
 |----------|----------|
-| [**START_HERE.md**](docs/START_HERE.md) | 👈 Начни отсюда |
-| [**CHECKLIST.md**](docs/CHECKLIST.md) | Пошаговая инструкция запуска |
-| [**SETUP.md**](docs/SETUP.md) | Детальная настройка Firebase |
+| [**ROADMAP_2025.md**](docs/ROADMAP_2025.md) | 🚀 **План развития:** спринты, канбан, тестирование |
+| [**AI_PROMPTS.md**](docs/AI_PROMPTS.md) | 🤖 Промпты для Claude, GPT, Midjourney |
+| [**SETUP.md**](docs/SETUP.md) | Настройка Firebase |
 | [**DESIGN_GUIDE.md**](docs/DESIGN_GUIDE.md) | Дизайн-система и стили |
 | [**ASSETS_GUIDE.md**](docs/ASSETS_GUIDE.md) | Как создавать графику элементов |
 | [**CONTRIBUTING.md**](docs/CONTRIBUTING.md) | Гайд для разработчика |
-| [**TODO.md**](docs/TODO.md) | Roadmap и следующие шаги |
+| [**TODO.md**](docs/TODO.md) | Полный список задач |
 
 ## Стек технологий
 
@@ -148,4 +148,4 @@ npm run web
 
 ---
 
-**Начни с [docs/START_HERE.md](docs/START_HERE.md)**
+**Начни с [docs/ROADMAP_2025.md](docs/ROADMAP_2025.md)** — там полный план действий
