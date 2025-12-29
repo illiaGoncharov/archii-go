@@ -1,8 +1,11 @@
 // Скрипт для заполнения Firestore тестовыми данными
 // Запустить: npx ts-node scripts/seed-data.ts
+//
+// Для загрузки детальных POI Москвы и СПб используйте:
+// npx ts-node scripts/seed-moscow-spb-poi.ts
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 import { firebaseConfig } from '../firebase-config';
 
 // Инициализируем Firebase
