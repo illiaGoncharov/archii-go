@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
+  signInAnonymously as firebaseSignInAnonymously,
   User as FirebaseUser,
   updateProfile
 } from 'firebase/auth';
@@ -77,3 +78,7 @@ export const getCurrentUser = (): FirebaseUser | null => {
   return auth.currentUser;
 };
 
+// Анонимный вход
+export const signInAnonymously = async () => {
+  return firebaseSignInAnonymously(auth);
+};
