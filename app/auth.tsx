@@ -1,4 +1,4 @@
-// Экран авторизации
+// Экран авторизации — Структурная эстетика
 
 import { useState } from 'react';
 import {
@@ -17,7 +17,6 @@ import {
 import { router } from 'expo-router';
 import { signIn, signUp, signInAnonymously } from '../services/auth';
 import { useUserStore } from '../stores/userStore';
-import { Colors, Typography, Spacing, BorderRadius } from '../constants/design';
 import { FirebaseError } from 'firebase/app';
 
 type AuthMode = 'signin' | 'signup';
@@ -55,7 +54,6 @@ export default function AuthScreen() {
 
     let isValid = true;
 
-    // Проверка email
     if (!email.trim()) {
       newErrors.email = 'Введите email';
       isValid = false;
@@ -64,7 +62,6 @@ export default function AuthScreen() {
       isValid = false;
     }
 
-    // Проверка пароля
     if (!password) {
       newErrors.password = 'Введите пароль';
       isValid = false;
@@ -73,15 +70,12 @@ export default function AuthScreen() {
       isValid = false;
     }
 
-    // Проверки для регистрации
     if (mode === 'signup') {
-      // Проверка имени
       if (!displayName.trim()) {
         newErrors.displayName = 'Введите имя';
         isValid = false;
       }
 
-      // Проверка подтверждения пароля
       if (!confirmPassword) {
         newErrors.confirmPassword = 'Подтвердите пароль';
         isValid = false;
@@ -162,7 +156,6 @@ export default function AuthScreen() {
       const userCredential = await signInAnonymously();
       const firebaseUser = userCredential.user;
       
-      // Создаём временного пользователя для анонимного входа
       const anonymousUser = {
         id: firebaseUser.uid,
         email: 'anonymous',
@@ -206,37 +199,36 @@ export default function AuthScreen() {
             <Text style={styles.subtitle}>Собирай архитектуру города</Text>
           </View>
 
-          {/* Переключатель режима */}
-          <View style={styles.modeSwitch}>
-            <TouchableOpacity
-              style={[styles.modeButton, mode === 'signin' && styles.modeButtonActive]}
-              onPress={() => setMode('signin')}
-              disabled={isLoading}
-            >
-              <Text style={[styles.modeButtonText, mode === 'signin' && styles.modeButtonTextActive]}>
-                Вход
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.modeButton, mode === 'signup' && styles.modeButtonActive]}
-              onPress={() => setMode('signup')}
-              disabled={isLoading}
-            >
-              <Text style={[styles.modeButtonText, mode === 'signup' && styles.modeButtonTextActive]}>
-                Регистрация
-              </Text>
-            </TouchableOpacity>
-          </View>
-
           {/* Форма */}
-          <View style={styles.form}>
+          <View style={styles.formContainer}>
+            {/* Переключатель режима */}
+            <View style={styles.modeSwitch}>
+              <TouchableOpacity
+                onPress={() => setMode('signin')}
+                disabled={isLoading}
+              >
+                <Text style={[styles.modeText, mode === 'signin' && styles.modeTextActive]}>
+                  Вход
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.modeSeparator}>·</Text>
+              <TouchableOpacity
+                onPress={() => setMode('signup')}
+                disabled={isLoading}
+              >
+                <Text style={[styles.modeText, mode === 'signup' && styles.modeTextActive]}>
+                  Регистрация
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             {/* Имя (только для регистрации) */}
             {mode === 'signup' && (
-              <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
                 <TextInput
                   style={[styles.input, !!errors.displayName && styles.inputError]}
                   placeholder="Имя"
-                  placeholderTextColor={Colors.textTertiary}
+                  placeholderTextColor="#8C959F"
                   value={displayName}
                   onChangeText={(text) => {
                     setDisplayName(text);
@@ -254,11 +246,11 @@ export default function AuthScreen() {
             )}
 
             {/* Email */}
-            <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
               <TextInput
                 style={[styles.input, !!errors.email && styles.inputError]}
                 placeholder="Email"
-                placeholderTextColor={Colors.textTertiary}
+                placeholderTextColor="#8C959F"
                 value={email}
                 onChangeText={(text) => {
                   setEmail(text);
@@ -277,11 +269,11 @@ export default function AuthScreen() {
             </View>
 
             {/* Пароль */}
-            <View style={styles.inputContainer}>
+            <View style={styles.inputWrapper}>
               <TextInput
                 style={[styles.input, !!errors.password && styles.inputError]}
                 placeholder="Пароль"
-                placeholderTextColor={Colors.textTertiary}
+                placeholderTextColor="#8C959F"
                 value={password}
                 onChangeText={(text) => {
                   setPassword(text);
@@ -301,11 +293,11 @@ export default function AuthScreen() {
 
             {/* Подтверждение пароля (только для регистрации) */}
             {mode === 'signup' && (
-              <View style={styles.inputContainer}>
+              <View style={styles.inputWrapper}>
                 <TextInput
                   style={[styles.input, !!errors.confirmPassword && styles.inputError]}
                   placeholder="Подтвердите пароль"
-                  placeholderTextColor={Colors.textTertiary}
+                  placeholderTextColor="#8C959F"
                   value={confirmPassword}
                   onChangeText={(text) => {
                     setConfirmPassword(text);
@@ -326,7 +318,11 @@ export default function AuthScreen() {
 
             {/* Забыл пароль (только для входа) */}
             {mode === 'signin' && (
-              <TouchableOpacity onPress={handleForgotPassword} disabled={isLoading}>
+              <TouchableOpacity 
+                onPress={handleForgotPassword} 
+                disabled={isLoading}
+                style={styles.forgotPasswordContainer}
+              >
                 <Text style={styles.forgotPassword}>Забыл пароль</Text>
               </TouchableOpacity>
             )}
@@ -338,7 +334,7 @@ export default function AuthScreen() {
               disabled={isLoading}
             >
               {isLoading ? (
-                <ActivityIndicator color={Colors.surface} />
+                <ActivityIndicator color="#FFFFFF" />
               ) : (
                 <Text style={styles.primaryButtonText}>
                   {mode === 'signin' ? 'Войти' : 'Зарегистрироваться'}
@@ -348,11 +344,11 @@ export default function AuthScreen() {
 
             {/* Анонимный вход */}
             <TouchableOpacity
-              style={[styles.secondaryButton, isLoading && styles.buttonDisabled]}
+              style={[styles.ghostButton, isLoading && styles.buttonDisabled]}
               onPress={handleAnonymousSignIn}
               disabled={isLoading}
             >
-              <Text style={styles.secondaryButtonText}>Войти анонимно</Text>
+              <Text style={styles.ghostButtonText}>Войти анонимно</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -364,108 +360,124 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: '#F6F8FA'
   },
   container: {
     flex: 1
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: Spacing.xl,
-    paddingBottom: Spacing.xl
+    paddingHorizontal: 24,
+    paddingBottom: 40
   },
   header: {
     alignItems: 'center',
-    marginTop: 60,
-    marginBottom: Spacing.xxxl
+    marginTop: 80,
+    marginBottom: 64
   },
   title: {
-    ...Typography.h1,
-    color: Colors.textPrimary,
-    marginBottom: Spacing.sm
+    fontSize: 32,
+    fontWeight: '600',
+    letterSpacing: -0.5,
+    color: '#24292F',
+    marginBottom: 8
   },
   subtitle: {
-    ...Typography.body,
-    color: Colors.textSecondary
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#57606A',
+    lineHeight: 20
+  },
+  formContainer: {
+    maxWidth: 320,
+    width: '100%',
+    alignSelf: 'center'
   },
   modeSwitch: {
     flexDirection: 'row',
-    backgroundColor: Colors.surface,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.xs,
-    marginBottom: Spacing.xl
-  },
-  modeButton: {
-    flex: 1,
-    paddingVertical: Spacing.md,
+    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: BorderRadius.base
+    marginBottom: 32,
+    gap: 12
   },
-  modeButtonActive: {
-    backgroundColor: Colors.primary
+  modeText: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#57606A'
   },
-  modeButtonText: {
-    ...Typography.button,
-    color: Colors.textSecondary
+  modeTextActive: {
+    color: '#24292F',
+    fontWeight: '500',
+    textDecorationLine: 'underline'
   },
-  modeButtonTextActive: {
-    color: Colors.surface
+  modeSeparator: {
+    fontSize: 14,
+    color: '#D0D7DE'
   },
-  form: {
-    gap: Spacing.base
-  },
-  inputContainer: {
-    marginBottom: Spacing.sm
+  inputWrapper: {
+    marginBottom: 12
   },
   input: {
-    backgroundColor: Colors.surface,
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.base,
-    ...Typography.body,
-    color: Colors.textPrimary
+    borderColor: '#D0D7DE',
+    borderRadius: 6,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#24292F',
+    lineHeight: 20
   },
   inputError: {
-    borderColor: Colors.error
+    borderColor: '#CF222E'
   },
   errorText: {
-    ...Typography.caption,
-    color: Colors.error,
-    marginTop: Spacing.xs,
-    marginLeft: Spacing.xs
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#CF222E',
+    marginTop: 6,
+    marginLeft: 2
+  },
+  forgotPasswordContainer: {
+    alignItems: 'flex-end',
+    marginTop: -4,
+    marginBottom: 8
   },
   forgotPassword: {
-    ...Typography.body,
-    color: Colors.primary,
-    textAlign: 'right',
-    marginTop: -Spacing.xs,
-    marginBottom: Spacing.sm
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#0969DA'
   },
   primaryButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: Spacing.base,
-    borderRadius: BorderRadius.md,
+    backgroundColor: '#0969DA',
+    height: 44,
+    borderRadius: 6,
     alignItems: 'center',
-    marginTop: Spacing.md
+    justifyContent: 'center',
+    marginTop: 16
   },
   primaryButtonText: {
-    ...Typography.button,
-    color: Colors.surface
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#FFFFFF'
   },
-  secondaryButton: {
+  ghostButton: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: Colors.border,
-    paddingVertical: Spacing.base,
-    borderRadius: BorderRadius.md,
-    alignItems: 'center'
+    borderColor: '#D0D7DE',
+    height: 44,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12
   },
-  secondaryButtonText: {
-    ...Typography.button,
-    color: Colors.textSecondary
+  ghostButtonText: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: '#57606A'
   },
   buttonDisabled: {
-    opacity: 0.6
+    opacity: 0.5
   }
 });
