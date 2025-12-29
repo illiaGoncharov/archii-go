@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ArchiGo — мобильное приложение для сбора архитектурных элементов">
+    <title>ArchiGo — Собирай архитектуру города</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --white: #FFFFFF;
+            --bg-alt: #F6F8FA;
+            --text: #24292F;
+            --text-secondary: #57606A;
+            --accent: #0969DA;
+            --border: #D0D7DE;
+            --border-light: #EAEEF2;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'SF Pro Display', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--white);
+            color: var(--text);
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 100;
+        }
+
+        .header .container {
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: none;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.15s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            padding: 144px 0 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 540px;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .screenshot-placeholder {
+            aspect-ratio: 9 / 16;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section--alt {
+            background: var(--bg-alt);
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .section-line {
+            width: 48px;
+            height: 1px;
+            background: var(--border);
+            margin-top: 16px;
+        }
+
+        /* How it works */
+        .steps {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 16px;
+        }
+
+        .step-number {
+            font-family: 'SF Mono', SFMono-Regular, Consolas, monospace;
+            font-size: 14px;
+            color: var(--border);
+            font-weight: 400;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Elements */
+        .elements-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid var(--border);
+            border-left: 1px solid var(--border);
+        }
+
+        .element-card {
+            padding: 24px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+
+        .element-card:hover {
+            background: var(--bg-alt);
+        }
+
+        .element-name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .element-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Cities */
+        .cities-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+        }
+
+        .city-block {
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .city-block:last-of-type {
+            border-bottom: none;
+        }
+
+        .city-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .city-count {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .city-places {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .cities-soon {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Beta */
+        .beta {
+            padding: 80px 0;
+        }
+
+        .beta-content {
+            max-width: 480px;
+        }
+
+        .beta-title {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .beta-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .beta-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .beta-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .beta-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .beta-input:focus {
+            border-color: var(--text);
+        }
+
+        .beta-alt {
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .beta-alt a {
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 0;
+        }
+
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .footer-copy {
+            order: 2;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            order: 1;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+
+        /* Desktop */
+        @media (min-width: 768px) {
+            .nav {
+                display: block;
+            }
+
+            .hero {
+                min-height: 85vh;
+                padding: 160px 0 120px;
+            }
+
+            .hero .container {
+                grid-template-columns: 1fr 320px;
+                gap: 80px;
+            }
+
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .hero-image {
+                max-width: 100%;
+            }
+
+            .section {
+                padding: 120px 0;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .steps {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+
+            .step {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .step-number {
+                font-size: 13px;
+            }
+
+            .elements-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .element-card {
+                padding: 32px;
+            }
+
+            .cities-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 80px;
+            }
+
+            .city-block {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            .beta-form {
+                flex-direction: row;
+            }
+
+            .beta-form .btn {
+                flex-shrink: 0;
+            }
+
+            .footer .container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .footer-copy {
+                order: 1;
+            }
+
+            .footer-links {
+                order: 2;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-title {
+                font-size: 56px;
+            }
+
+            .hero .container {
+                grid-template-columns: 1fr 360px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">ArchiGo</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#about" class="nav-link">О проекте</a></li>
+                    <li><a href="#how-it-works" class="nav-link">Как работает</a></li>
+                    <li><a href="#beta" class="nav-link">Бета-тест</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="about">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Собирай архитектуру города</h1>
+                <p class="hero-subtitle">Гуляй по Москве и Петербургу, находи архитектурные детали на фасадах — метопы, сандрики, капители. Собирай коллекцию и создавай собственные фасады.</p>
+                <a href="#beta" class="btn">Записаться на бета-тест</a>
+            </div>
+            <div class="hero-image">
+                <div class="screenshot-placeholder">
+                    Скриншот приложения
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--alt" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Как это работает</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <div class="step-title">Гуляй</div>
+                        <p class="step-desc">Выбери маршрут на карте или просто иди по улице</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <div class="step-title">Замечай</div>
+                        <p class="step-desc">Смотри на фасады зданий, ищи архитектурные детали</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <div class="step-title">Фотографируй</div>
+                        <p class="step-desc">Сфотографируй найденный элемент через приложение</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <div class="step-title">Собирай</div>
+                        <p class="step-desc">Получай очки и открывай редкие элементы в коллекции</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="elements">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Что собираем</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="elements-grid">
+                <div class="element-card">
+                    <div class="element-name">Метопа</div>
+                    <div class="element-desc">Декоративная плита во фризе дорического ордера</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Сандрик</div>
+                    <div class="element-desc">Декоративный карниз над окном или дверью</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Капитель</div>
+                    <div class="element-desc">Венчающая часть колонны или пилястры</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Маскарон</div>
+                    <div class="element-desc">Скульптурное украшение в виде головы или лица</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Розетка</div>
+                    <div class="element-desc">Орнамент в форме цветка с расходящимися лепестками</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-name">Атлант</div>
+                    <div class="element-desc">Мужская скульптура, поддерживающая перекрытие</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--alt" id="cities">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Города</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="cities-grid">
+                <div class="city-block">
+                    <div class="city-name">Москва</div>
+                    <div class="city-count">15+ точек</div>
+                    <p class="city-places">Тверская улица, Старый Арбат, Патриаршие пруды, Чистые пруды, Замоскворечье, Китай-город</p>
+                </div>
+                <div class="city-block">
+                    <div class="city-name">Санкт-Петербург</div>
+                    <div class="city-count">12+ точек</div>
+                    <p class="city-places">Невский проспект, Петроградская сторона, Васильевский остров, Литейный проспект</p>
+                </div>
+            </div>
+            <div class="cities-soon">
+                Скоро: Казань, Нижний Новгород
+            </div>
+        </div>
+    </section>
+
+    <section class="beta" id="beta">
+        <div class="container">
+            <div class="beta-content">
+                <h2 class="beta-title">Хочешь попробовать первым?</h2>
+                <p class="beta-text">Оставь контакт — пригласим на закрытый бета-тест</p>
+                <form class="beta-form" action="https://formspree.io/f/XXXX" method="POST">
+                    <input 
+                        type="text" 
+                        name="contact" 
+                        class="beta-input" 
+                        placeholder="Email или @telegram"
+                        required
+                    >
+                    <button type="submit" class="btn">Записаться</button>
+                </form>
+                <p class="beta-alt">Или напиши напрямую: <a href="https://t.me/archigo_app">@archigo_app</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-copy">© 2025 ArchiGo</div>
+            <div class="footer-links">
+                <a href="https://t.me/archigo_app">Telegram</a>
+                <a href="https://instagram.com/archigo_app">Instagram</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
