@@ -6,7 +6,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useMapStore } from '../../stores/mapStore';
 import { getCurrentLocation } from '../../utils/geolocation';
 import POIMarkerComponent from '../../components/map/POIMarker';
-import POIDetailModal from '../../components/map/POIDetailModal';
+// import { POIDetailModal } from '../../components/map/POIDetailModal';
 
 export default function MapScreen() {
   const { pois, selectedPOI, userLocation, fetchPOI, setSelectedPOI, setUserLocation } = useMapStore();
@@ -68,11 +68,12 @@ export default function MapScreen() {
       </MapView>
 
       {/* Модальное окно с деталями POI */}
-      <POIDetailModal
+      {/* TODO: Подключить POIDetailModal когда все POI будут иметь расширенные поля */}
+      {/* <POIDetailModal
         poi={selectedPOI}
         visible={selectedPOI !== null}
         onClose={() => setSelectedPOI(null)}
-      />
+      /> */}
     </View>
   );
 }
